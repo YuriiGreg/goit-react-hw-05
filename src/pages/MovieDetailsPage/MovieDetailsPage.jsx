@@ -1,5 +1,5 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
-import { useParams, useNavigate, Routes, Route, Link } from 'react-router-dom';
+import { useEffect, useState, Suspense, lazy, useRef } from 'react';
+import { useParams, useNavigate, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { fetchMovieDetails } from '../../api/api';
 import styles from './MovieDetailsPage.module.css';
 
@@ -9,17 +9,20 @@ const MovieReviews = lazy(() => import('../../components/MovieReviews/MovieRevie
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [movie, setMovie] = useState(null);
+
+  const locationRef = useRef(location.state?.from || '/movies');
 
   useEffect(() => {
     fetchMovieDetails(movieId).then(setMovie);
   }, [movieId]);
 
   const goBack = () => {
-    navigate(-1);
+    navigate(locationRef.current);
   };
 
-  if (!movie) return null;
+  if (!movie) return <div>Loading...</div>;
 
   return (
     <div className={styles.container}>
