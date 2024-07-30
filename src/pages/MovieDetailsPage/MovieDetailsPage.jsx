@@ -15,7 +15,7 @@ const MovieDetailsPage = () => {
   const locationRef = useRef(location.state?.from || '/movies');
 
   useEffect(() => {
-    fetchMovieDetails(movieId).then(setMovie);
+    fetchMovieDetails(movieId).then(setMovie).catch(console.error);
   }, [movieId]);
 
   const goBack = () => {
@@ -53,4 +53,8 @@ const MovieDetailsPage = () => {
 };
 
 export default MovieDetailsPage;
+
+
+
+
 
